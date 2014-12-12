@@ -7,6 +7,16 @@
 //
 
 #import "AppDelegate.h"
+#import "RootTabbarViewController.h"
+#import "UMSocial.h"
+#import "MobClick.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialQQHandler.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "LoginViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +27,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [UMSocialData setAppKey:@"53f9e813fd98c528ca011675"];
+    [MobClick startWithAppkey:@"53f9e813fd98c528ca011675"];
+    //[MobClick startWithAppkey:@"53f9e813fd98c528ca011675" reportPolicy:0 channelId:@"同步推"];
+    [MobClick updateOnlineConfig];
+    [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeApp;
+    [UMSocialData defaultData].extConfig.title = @"我在玩最近非常火的一款软件《全民大冲关》啦，有强大的题库囊括各类知识，免费在线做题，还可以在线抽奖！感觉非常棒哦，一起来玩儿吧？";
+    [UMSocialWechatHandler setWXAppId:@"wxd9a39c7122aa6516" url:@"https://itunes.apple.com/us/app/quan-min-da-chong-guan-bu/id913189469?l=zh&ls=1&mt=8"];
+    [UMSocialData defaultData].extConfig.wechatSessionData.url = @"https://itunes.apple.com/us/app/quan-min-da-chong-guan-bu/id913189469?l=zh&ls=1&mt=8";
+    [UMSocialQQHandler setQQWithAppId:@"100424468" appKey:@"53f9e813fd98c528ca011675" url:@"https://itunes.apple.com/us/app/quan-min-da-chong-guan-bu/id913189469?l=zh&ls=1&mt=8"];
+    
+    [UMSocialQQHandler setSupportWebView:YES];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = [[RootTabbarViewController alloc] init];
+    [self.window makeKeyAndVisible];
+    
+    
+    
     return YES;
 }
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -41,5 +71,4 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
 @end
